@@ -22,19 +22,33 @@ public class AltaAlumnoFrame extends JInternalFrame {
         JButton btn = new JButton("Guardar");
         add(btn, BorderLayout.SOUTH);
         btn.addActionListener(ev -> {
-            try {
-                int legajo = Integer.parseInt(txtLegajo.getText().trim());
-                String apellido = txtApellido.getText().trim();
-                String nombre = txtNombre.getText().trim();
-                Alumno a = new Alumno(legajo, apellido, nombre);
-                if (alumnos.add(a)) {
-                    JOptionPane.showMessageDialog(this,"Alumno agregado.");
-                } else {
-                    JOptionPane.showMessageDialog(this,"El alumno ya existe (por legajo).");
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,"Error en los datos.");
-            }
+         try {
+        if (txtLegajo.getText().trim().isEmpty() || 
+            txtApellido.getText().trim().isEmpty() || 
+            txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
+            return;
+        }
+
+        int legajo = Integer.parseInt(txtLegajo.getText().trim());
+        String apellido = txtApellido.getText().trim().toUpperCase();
+        String nombre = txtNombre.getText().trim().toUpperCase();
+
+        Alumno a = new Alumno(legajo, apellido, nombre);
+        if (alumnos.add(a)) {
+            JOptionPane.showMessageDialog(this,"Alumno agregado.");
+            txtLegajo.setText("");
+            txtApellido.setText("");
+            txtNombre.setText("");
+            txtLegajo.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this,"El alumno ya existe (por legajo).");
+        }
+    } catch (NumberFormatException nfe) {
+        JOptionPane.showMessageDialog(this,"El legajo debe ser un número entero.");
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this,"Ocurrió un error: " + ex.getMessage());
+    }
         });
     }
 }
