@@ -23,18 +23,33 @@ public class AltaMateriaFrame extends JInternalFrame {
         add(btn, BorderLayout.SOUTH);
         btn.addActionListener(ev -> {
             try {
+                if (txtId.getText().trim().isEmpty() || 
+                    txtNombre.getText().trim().isEmpty() || 
+                    txtAnio.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.");
+                    return;
+                }
+
                 int id = Integer.parseInt(txtId.getText().trim());
-                String nombre = txtNombre.getText().trim();
+                String nombre = txtNombre.getText().trim().toUpperCase();
                 int anio = Integer.parseInt(txtAnio.getText().trim());
-                Materia m = new Materia(id,nombre,anio);
+
+                Materia m = new Materia(id, nombre, anio);
                 if (materias.add(m)) {
                     JOptionPane.showMessageDialog(this,"Materia agregada.");
+                    txtId.setText("");
+                    txtNombre.setText("");
+                    txtAnio.setText("");
+                    txtId.requestFocus();
                 } else {
                     JOptionPane.showMessageDialog(this,"La materia ya existe.");
                 }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(this,"ID y Año deben ser números enteros.");
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this,"Error en los datos.");
+                JOptionPane.showMessageDialog(this,"Ocurrió un error: " + ex.getMessage());
             }
         });
+
     }
 }
