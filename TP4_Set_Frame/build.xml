@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TP4_Set_Frame" default="default" basedir=".">
+    <import file="nbproject/build-impl.xml"/>
+</project>
